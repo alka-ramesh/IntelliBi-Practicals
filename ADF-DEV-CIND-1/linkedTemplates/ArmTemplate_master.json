@@ -1,0 +1,564 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-DEV-CIND-1"
+		},
+		"LS_ADLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS'"
+		},
+		"LS_ADLS_BINARY_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_BINARY'"
+		},
+		"LS_ADLS_CSV_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_CSV'"
+		},
+		"LS_ADLS_Config_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Config'"
+		},
+		"LS_ADLS_Excel_Source_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Excel_Source'"
+		},
+		"LS_ADLS_Paramconfig_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Paramconfig'"
+		},
+		"LS_ADLS_SINK_CSV1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_SINK_CSV1'"
+		},
+		"LS_ADLS_SINK_PARQUET_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_SINK_PARQUET'"
+		},
+		"LS_ADLS_SOURCE_CSV_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_SOURCE_CSV'"
+		},
+		"LS_ADLS_SOURCE_CSV1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_SOURCE_CSV1'"
+		},
+		"LS_ADLS_SRC_SCV_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_SRC_SCV'"
+		},
+		"LS_ADLS_Sink_Binary_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Sink_Binary'"
+		},
+		"LS_ADLS_XLSX_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_XLSX'"
+		},
+		"LS_ADSL_Sink_CSV_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADSL_Sink_CSV'"
+		},
+		"LS_Adls_sink_csv_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_Adls_sink_csv'"
+		},
+		"LS_Blob_Csv_Source_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_Blob_Csv_Source'"
+		},
+		"LS_SQLDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQLDB'"
+		},
+		"LS_SQLDB_ADF_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQLDB_ADF'"
+		},
+		"LS_SQLServer_Source_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQLServer_Source'"
+		},
+		"LS_SQL_TBL_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQL_TBL'"
+		},
+		"LS_SSMS_SOURCE_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SSMS_SOURCE'"
+		},
+		"LS_ADLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_BINARY_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_CSV_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_Config_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_Excel_Source_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_KV_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net"
+		},
+		"LS_ADLS_Paramconfig_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SINK_AKV_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net"
+		},
+		"LS_ADLS_SINK_CSV1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SINK_PARQUET_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SOURCE_CSV_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SOURCE_CSV1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SRC_SCV_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_Sink_Binary_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_XLSX_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADSL_Sink_CSV_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_Adls_sink_csv_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://AKV-Dev-CenInd-001.vault.azure.net/"
+		},
+		"LS_SQLDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SQLDB_DEV_001"
+		},
+		"LS_SQLDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "intelibi"
+		},
+		"LS_SQLDB_ADF_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_ADF_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF"
+		},
+		"LS_SQLDB_ADF_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "intelibi"
+		},
+		"LS_SQLDB_Common_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_Common_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SQLDB_DEV_001"
+		},
+		"LS_SQLDB_Common_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "intelibi"
+		},
+		"LS_SQLDB_KV_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_KV_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SQLDB_DEV_001"
+		},
+		"LS_SQLDB_KV_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "intelibi"
+		},
+		"LS_SQLServer_Source_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-2M0IEN2\\SQLEXPRESS"
+		},
+		"LS_SQLServer_Source_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "MILIND_PRACTICE"
+		},
+		"LS_SQLServer_Source_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
+		},
+		"LS_SQL_SER_DLS_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-2M0IEN2\\SQLEXPRESS"
+		},
+		"LS_SQL_SER_DLS_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().DB_Name}"
+		},
+		"LS_SQL_SER_DLS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
+		},
+		"LS_SQL_TBL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "myserver-dev.database.windows.net"
+		},
+		"LS_SQL_TBL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF"
+		},
+		"LS_SQL_TBL_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "intelibi"
+		},
+		"LS_SSMS_SOURCE_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-2M0IEN2\\SQLEXPRESS"
+		},
+		"LS_SSMS_SOURCE_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "MILIND_PRACTICE"
+		},
+		"LS_SSMS_SOURCE_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
+		},
+		"Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_Container": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_File": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Event_Driven_Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/16ac147b-587c-4c16-a51a-8dca4e36f92a/resourceGroups/RG_Pro_Dev001/providers/Microsoft.Storage/storageAccounts/blobdevcenind"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADF-DEV-CIND-1_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_ADLS_accountKey": {
+						"value": "[parameters('LS_ADLS_accountKey')]"
+					},
+					"LS_ADLS_BINARY_accountKey": {
+						"value": "[parameters('LS_ADLS_BINARY_accountKey')]"
+					},
+					"LS_ADLS_CSV_accountKey": {
+						"value": "[parameters('LS_ADLS_CSV_accountKey')]"
+					},
+					"LS_ADLS_Config_accountKey": {
+						"value": "[parameters('LS_ADLS_Config_accountKey')]"
+					},
+					"LS_ADLS_Excel_Source_accountKey": {
+						"value": "[parameters('LS_ADLS_Excel_Source_accountKey')]"
+					},
+					"LS_ADLS_Paramconfig_accountKey": {
+						"value": "[parameters('LS_ADLS_Paramconfig_accountKey')]"
+					},
+					"LS_ADLS_SINK_CSV1_accountKey": {
+						"value": "[parameters('LS_ADLS_SINK_CSV1_accountKey')]"
+					},
+					"LS_ADLS_SINK_PARQUET_accountKey": {
+						"value": "[parameters('LS_ADLS_SINK_PARQUET_accountKey')]"
+					},
+					"LS_ADLS_SOURCE_CSV_accountKey": {
+						"value": "[parameters('LS_ADLS_SOURCE_CSV_accountKey')]"
+					},
+					"LS_ADLS_SOURCE_CSV1_accountKey": {
+						"value": "[parameters('LS_ADLS_SOURCE_CSV1_accountKey')]"
+					},
+					"LS_ADLS_SRC_SCV_accountKey": {
+						"value": "[parameters('LS_ADLS_SRC_SCV_accountKey')]"
+					},
+					"LS_ADLS_Sink_Binary_accountKey": {
+						"value": "[parameters('LS_ADLS_Sink_Binary_accountKey')]"
+					},
+					"LS_ADLS_XLSX_accountKey": {
+						"value": "[parameters('LS_ADLS_XLSX_accountKey')]"
+					},
+					"LS_ADSL_Sink_CSV_accountKey": {
+						"value": "[parameters('LS_ADSL_Sink_CSV_accountKey')]"
+					},
+					"LS_Adls_sink_csv_accountKey": {
+						"value": "[parameters('LS_Adls_sink_csv_accountKey')]"
+					},
+					"LS_Blob_Csv_Source_connectionString": {
+						"value": "[parameters('LS_Blob_Csv_Source_connectionString')]"
+					},
+					"LS_SQLDB_password": {
+						"value": "[parameters('LS_SQLDB_password')]"
+					},
+					"LS_SQLDB_ADF_password": {
+						"value": "[parameters('LS_SQLDB_ADF_password')]"
+					},
+					"LS_SQL_TBL_password": {
+						"value": "[parameters('LS_SQL_TBL_password')]"
+					},
+					"LS_ADLS_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_BINARY_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_BINARY_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_CSV_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_CSV_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_Config_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_Config_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_Excel_Source_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_Excel_Source_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_Paramconfig_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_Paramconfig_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_SINK_CSV1_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_SINK_CSV1_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_SINK_PARQUET_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_SINK_PARQUET_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_SOURCE_CSV_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_SOURCE_CSV_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_SOURCE_CSV1_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_SOURCE_CSV1_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_SRC_SCV_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_SRC_SCV_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_Sink_Binary_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_Sink_Binary_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_XLSX_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_XLSX_properties_typeProperties_url')]"
+					},
+					"LS_ADSL_Sink_CSV_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADSL_Sink_CSV_properties_typeProperties_url')]"
+					},
+					"LS_Adls_sink_csv_properties_typeProperties_url": {
+						"value": "[parameters('LS_Adls_sink_csv_properties_typeProperties_url')]"
+					},
+					"LS_KV_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+					},
+					"LS_SQLDB_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQLDB_properties_typeProperties_server')]"
+					},
+					"LS_SQLDB_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQLDB_properties_typeProperties_database')]"
+					},
+					"LS_SQLDB_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLDB_properties_typeProperties_userName')]"
+					},
+					"LS_SQLDB_ADF_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQLDB_ADF_properties_typeProperties_server')]"
+					},
+					"LS_SQLDB_ADF_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQLDB_ADF_properties_typeProperties_database')]"
+					},
+					"LS_SQLDB_ADF_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLDB_ADF_properties_typeProperties_userName')]"
+					},
+					"LS_SQL_TBL_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQL_TBL_properties_typeProperties_server')]"
+					},
+					"LS_SQL_TBL_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQL_TBL_properties_typeProperties_database')]"
+					},
+					"LS_SQL_TBL_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQL_TBL_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ADF-DEV-CIND-1_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-DEV-CIND-1_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "ADF-DEV-CIND-1_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_SQLServer_Source_password": {
+						"value": "[parameters('LS_SQLServer_Source_password')]"
+					},
+					"LS_SSMS_SOURCE_password": {
+						"value": "[parameters('LS_SSMS_SOURCE_password')]"
+					},
+					"LS_ADLS_KV_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_KV_properties_typeProperties_url')]"
+					},
+					"LS_ADLS_SINK_AKV_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_SINK_AKV_properties_typeProperties_url')]"
+					},
+					"LS_SQLDB_Common_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQLDB_Common_properties_typeProperties_server')]"
+					},
+					"LS_SQLDB_Common_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQLDB_Common_properties_typeProperties_database')]"
+					},
+					"LS_SQLDB_Common_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLDB_Common_properties_typeProperties_userName')]"
+					},
+					"LS_SQLDB_KV_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQLDB_KV_properties_typeProperties_server')]"
+					},
+					"LS_SQLDB_KV_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQLDB_KV_properties_typeProperties_database')]"
+					},
+					"LS_SQLDB_KV_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLDB_KV_properties_typeProperties_userName')]"
+					},
+					"LS_SQLServer_Source_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQLServer_Source_properties_typeProperties_server')]"
+					},
+					"LS_SQLServer_Source_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQLServer_Source_properties_typeProperties_database')]"
+					},
+					"LS_SQLServer_Source_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLServer_Source_properties_typeProperties_userName')]"
+					},
+					"LS_SQL_SER_DLS_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQL_SER_DLS_properties_typeProperties_server')]"
+					},
+					"LS_SQL_SER_DLS_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQL_SER_DLS_properties_typeProperties_database')]"
+					},
+					"LS_SQL_SER_DLS_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQL_SER_DLS_properties_typeProperties_userName')]"
+					},
+					"LS_SSMS_SOURCE_properties_typeProperties_server": {
+						"value": "[parameters('LS_SSMS_SOURCE_properties_typeProperties_server')]"
+					},
+					"LS_SSMS_SOURCE_properties_typeProperties_database": {
+						"value": "[parameters('LS_SSMS_SOURCE_properties_typeProperties_database')]"
+					},
+					"LS_SSMS_SOURCE_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SSMS_SOURCE_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-DEV-CIND-1_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "ADF-DEV-CIND-1_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_Container": {
+						"value": "[parameters('Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_Container')]"
+					},
+					"Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_File": {
+						"value": "[parameters('Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_File')]"
+					},
+					"Event_Driven_Trigger_properties_typeProperties_scope": {
+						"value": "[parameters('Event_Driven_Trigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-DEV-CIND-1_ArmTemplate_2')]"
+			]
+		}
+	]
+}

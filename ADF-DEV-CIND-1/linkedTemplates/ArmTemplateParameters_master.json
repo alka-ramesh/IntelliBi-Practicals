@@ -1,0 +1,213 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-DEV-CIND-1"
+		},
+		"LS_ADLS_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_BINARY_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_CSV_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_Config_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_Excel_Source_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_Paramconfig_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_SINK_CSV1_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_SINK_PARQUET_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_SOURCE_CSV_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_SOURCE_CSV1_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_SRC_SCV_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_Sink_Binary_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_XLSX_accountKey": {
+			"value": ""
+		},
+		"LS_ADSL_Sink_CSV_accountKey": {
+			"value": ""
+		},
+		"LS_Adls_sink_csv_accountKey": {
+			"value": ""
+		},
+		"LS_Blob_Csv_Source_connectionString": {
+			"value": ""
+		},
+		"LS_SQLDB_password": {
+			"value": ""
+		},
+		"LS_SQLDB_ADF_password": {
+			"value": ""
+		},
+		"LS_SQLServer_Source_password": {
+			"value": ""
+		},
+		"LS_SQL_TBL_password": {
+			"value": ""
+		},
+		"LS_SSMS_SOURCE_password": {
+			"value": ""
+		},
+		"LS_ADLS_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_BINARY_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_CSV_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_Config_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_Excel_Source_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_KV_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net"
+		},
+		"LS_ADLS_Paramconfig_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SINK_AKV_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net"
+		},
+		"LS_ADLS_SINK_CSV1_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SINK_PARQUET_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SOURCE_CSV_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SOURCE_CSV1_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_SRC_SCV_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_Sink_Binary_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADLS_XLSX_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_ADSL_Sink_CSV_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_Adls_sink_csv_properties_typeProperties_url": {
+			"value": "https://adlsdevcenind01.dfs.core.windows.net/"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"value": "https://AKV-Dev-CenInd-001.vault.azure.net/"
+		},
+		"LS_SQLDB_properties_typeProperties_server": {
+			"value": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_properties_typeProperties_database": {
+			"value": "SQLDB_DEV_001"
+		},
+		"LS_SQLDB_properties_typeProperties_userName": {
+			"value": "intelibi"
+		},
+		"LS_SQLDB_ADF_properties_typeProperties_server": {
+			"value": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_ADF_properties_typeProperties_database": {
+			"value": "ADF"
+		},
+		"LS_SQLDB_ADF_properties_typeProperties_userName": {
+			"value": "intelibi"
+		},
+		"LS_SQLDB_Common_properties_typeProperties_server": {
+			"value": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_Common_properties_typeProperties_database": {
+			"value": "SQLDB_DEV_001"
+		},
+		"LS_SQLDB_Common_properties_typeProperties_userName": {
+			"value": "intelibi"
+		},
+		"LS_SQLDB_KV_properties_typeProperties_server": {
+			"value": "myserver-dev.database.windows.net"
+		},
+		"LS_SQLDB_KV_properties_typeProperties_database": {
+			"value": "SQLDB_DEV_001"
+		},
+		"LS_SQLDB_KV_properties_typeProperties_userName": {
+			"value": "intelibi"
+		},
+		"LS_SQLServer_Source_properties_typeProperties_server": {
+			"value": "DESKTOP-2M0IEN2\\SQLEXPRESS"
+		},
+		"LS_SQLServer_Source_properties_typeProperties_database": {
+			"value": "MILIND_PRACTICE"
+		},
+		"LS_SQLServer_Source_properties_typeProperties_userName": {
+			"value": "admin"
+		},
+		"LS_SQL_SER_DLS_properties_typeProperties_server": {
+			"value": "DESKTOP-2M0IEN2\\SQLEXPRESS"
+		},
+		"LS_SQL_SER_DLS_properties_typeProperties_database": {
+			"value": "@{linkedService().DB_Name}"
+		},
+		"LS_SQL_SER_DLS_properties_typeProperties_userName": {
+			"value": "admin"
+		},
+		"LS_SQL_TBL_properties_typeProperties_server": {
+			"value": "myserver-dev.database.windows.net"
+		},
+		"LS_SQL_TBL_properties_typeProperties_database": {
+			"value": "ADF"
+		},
+		"LS_SQL_TBL_properties_typeProperties_userName": {
+			"value": "intelibi"
+		},
+		"LS_SSMS_SOURCE_properties_typeProperties_server": {
+			"value": "DESKTOP-2M0IEN2\\SQLEXPRESS"
+		},
+		"LS_SSMS_SOURCE_properties_typeProperties_database": {
+			"value": "MILIND_PRACTICE"
+		},
+		"LS_SSMS_SOURCE_properties_typeProperties_userName": {
+			"value": "admin"
+		},
+		"Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_Container": {
+			"value": "@triggerBody().folderPath"
+		},
+		"Event_Driven_Trigger_properties_PL_Event_Triger_parameters_PL_File": {
+			"value": "@triggerBody().fileName"
+		},
+		"Event_Driven_Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/16ac147b-587c-4c16-a51a-8dca4e36f92a/resourceGroups/RG_Pro_Dev001/providers/Microsoft.Storage/storageAccounts/blobdevcenind"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
