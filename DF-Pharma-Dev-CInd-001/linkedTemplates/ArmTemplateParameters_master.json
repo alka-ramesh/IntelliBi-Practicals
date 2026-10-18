@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "DF-Pharma-Dev-CInd-001"
+		},
+		"LS_ASQL_Pharma_RAW_password": {
+			"value": ""
+		},
+		"AKV_ADLSAccess_properties_typeProperties_baseUrl": {
+			"value": "https://KV-Pharma-Dev-Cind-001.vault.azure.net/"
+		},
+		"LS_ADLS_Sales_properties_typeProperties_url": {
+			"value": "https://adlspharmadevcindia001.dfs.core.windows.net"
+		},
+		"LS_ASQL_Pharma_RAW_properties_typeProperties_server": {
+			"value": "myserver-dev.database.windows.net"
+		},
+		"LS_ASQL_Pharma_RAW_properties_typeProperties_database": {
+			"value": "ADF"
+		},
+		"LS_ASQL_Pharma_RAW_properties_typeProperties_userName": {
+			"value": "intelibi"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
