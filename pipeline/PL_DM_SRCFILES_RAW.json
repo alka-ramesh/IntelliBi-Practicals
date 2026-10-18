@@ -1,0 +1,229 @@
+{
+	"name": "PL_DM_SRCFILES_RAW",
+	"properties": {
+		"description": "Pipeline for Demographic Data transformation and the source files are on RAW folder",
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "Updated_on",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "sale_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SalesID",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "product",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Product_Name",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "category",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "category",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "price",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "price",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "sale_date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sale_date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "region",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "region",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Updated_on",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Updated_on",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_CSV_Sales",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container_Name": "raw",
+							"Folders_Name": "SalesData",
+							"File_Name": "sales_jan.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_CSV_Sales",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container_Name": "branze",
+							"Folders_Name": "SalesData",
+							"File_Name": "Sales_jan.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "Delete1",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_CSV_Sales",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container_Name": "raw",
+							"Folders_Name": "SalesData",
+							"File_Name": "sales_jan.csv"
+						}
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "LS_ADLS_Sales",
+							"type": "LinkedServiceReference"
+						}
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "PL_For_Sales"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-07T09:23:55Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

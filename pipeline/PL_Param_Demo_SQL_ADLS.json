@@ -1,0 +1,91 @@
+{
+	"name": "PL_Param_Demo_SQL_ADLS",
+	"properties": {
+		"description": "Demo for copying the data from SQL Server to ADLS Using parameter at Dataset level.",
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@createArray('updated_customer','updated_sales','updated_stock')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy TBL TO CSV files",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_ASQL_RAW",
+									"type": "DatasetReference",
+									"parameters": {
+										"PTablename": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_CSV_Sales",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container_Name": "branze",
+										"Folders_Name": "paramdemo",
+										"File_Name": {
+											"value": "@concat(Item(),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-10-11T12:31:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

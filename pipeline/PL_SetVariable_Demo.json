@@ -1,0 +1,111 @@
+{
+	"name": "PL_SetVariable_Demo",
+	"properties": {
+		"description": "Set Variable set the value at run time for the variable and it can be use in the other activities in the pipeline.",
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "PSetVariableValue",
+					"value": {
+						"value": "@convertFromUtc(utcNow(),'India Standard Time','yyyy-MM-dd HH:mm:ss')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_CSV_Sales",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container_Name": "raw",
+							"Folders_Name": "SalesData/FilesList",
+							"File_Name": "COUNTRY.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_CSV_Sales",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container_Name": "branze",
+							"Folders_Name": "SetVariableDemo",
+							"File_Name": {
+								"value": "@concat('Country',variables('PSetVariableValue'),'.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"variables": {
+			"PSetVariableValue": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-13T06:22:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

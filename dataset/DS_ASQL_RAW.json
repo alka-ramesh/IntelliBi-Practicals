@@ -1,0 +1,25 @@
+{
+	"name": "DS_ASQL_RAW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_Pharma_RAW",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"PTablename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().PTablename",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

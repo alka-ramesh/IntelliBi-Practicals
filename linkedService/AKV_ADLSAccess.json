@@ -1,0 +1,11 @@
+{
+	"name": "AKV_ADLSAccess",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://KV-Pharma-Dev-Cind-001.vault.azure.net/"
+		}
+	}
+}

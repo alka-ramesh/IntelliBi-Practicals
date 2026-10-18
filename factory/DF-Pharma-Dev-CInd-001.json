@@ -1,0 +1,15 @@
+{
+	"name": "DF-Pharma-Dev-CInd-001",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "24d3c668-7e11-4f27-a01b-1baf7dbfb6ad",
+		"tenantId": "fd7d9027-6749-4ac4-94e8-ef0e8f97c1a4"
+	}
+}
