@@ -1,0 +1,24 @@
+{
+	"name": "LS_SQLDB_Common",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "myserver-dev.database.windows.net",
+			"database": "SQLDB_DEV_001",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "intelibi",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "kv-sqldb"
+			}
+		}
+	}
+}

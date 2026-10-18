@@ -1,0 +1,146 @@
+{
+	"name": "PL_Email_Notification",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADLS_Binary",
+						"type": "DatasetReference",
+						"parameters": {
+							"src_container": {
+								"value": "@pipeline().parameters.container",
+								"type": "Expression"
+							},
+							"src_folder": {
+								"value": "@pipeline().parameters.Folder",
+								"type": "Expression"
+							},
+							"src_file": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_Binary",
+						"type": "DatasetReference",
+						"parameters": {
+							"src_container": "sink",
+							"src_folder": "mail-test",
+							"src_file": "DIAGNOSIS.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-24.centralindia.logic.azure.com:443/workflows/e08e79ad1c0e4bffaaf6a610d929ddc3/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=AaZyrAQ2G8n964fEv1uAd5qAElyPqFoIuGYYAYn7HE4",
+					"body": {
+						"value": "{\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"EmailTo\": \"alka.ramesh.jagtap@gmail.com\",\n\"Subject\": \"Pipeline is Completed\",\n\"PipelineName\": \"@{pipeline().Pipeline}\",\n\"activityname\": \"Copy Data Activity\",\n\"status\": \"@{activity('Copy data1').status}\",\n\"ErrorMessage\": \"There is no error in the pipeline\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Web1_copy1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-24.centralindia.logic.azure.com:443/workflows/e08e79ad1c0e4bffaaf6a610d929ddc3/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=AaZyrAQ2G8n964fEv1uAd5qAElyPqFoIuGYYAYn7HE4",
+					"body": {
+						"value": "{\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"EmailTo\": \"alka.ramesh.jagtap@gmail.com\",\n\"Subject\": \"Pipeline is Failed\",\n\"PipelineName\": \"@{pipeline().Pipeline}\",\n\"activityname\": \"Copy Data Activity\",\n\"status\": \"@{activity('Copy data1').status}\",\n\"ErrorMessage\": \"@{activity('Copy data1').output.errors[0].Message}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "source"
+			},
+			"Folder": {
+				"type": "string",
+				"defaultValue": "folder-1-1"
+			},
+			"File": {
+				"type": "string",
+				"defaultValue": "DIAGNOSIS.csv"
+			}
+		},
+		"folder": {
+			"name": "Chetan Sir"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-08T04:41:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

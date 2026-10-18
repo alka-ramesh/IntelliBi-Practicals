@@ -1,0 +1,7 @@
+{
+	"name": "SHIR-SSMS",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self Hosted Integration Runtime for SSMS"
+	}
+}

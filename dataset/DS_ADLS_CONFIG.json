@@ -1,0 +1,63 @@
+{
+	"name": "DS_ADLS_CONFIG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_Config",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"con_container": {
+				"type": "string"
+			},
+			"con_folder": {
+				"type": "string"
+			},
+			"con_file": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().con_file",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().con_folder",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().con_container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"src_container": {
+					"type": "string"
+				},
+				"src_folder": {
+					"type": "string"
+				},
+				"src_file": {
+					"type": "string"
+				},
+				"sink_cotainer": {
+					"type": "string"
+				},
+				"sink_folder": {
+					"type": "string"
+				},
+				"sink_file": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

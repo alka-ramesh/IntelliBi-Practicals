@@ -1,0 +1,174 @@
+{
+	"name": "PL_LinkService_param",
+	"properties": {
+		"description": "Demonstration of Parameterized linked Services",
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "DS_ADLS_Paramconfig",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@pipeline().parameters.Config_Container",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.Folder",
+								"type": "Expression"
+							},
+							"file": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_SQL_SERVER",
+									"type": "DatasetReference",
+									"parameters": {
+										"Database_name": {
+											"value": "@item().src_db",
+											"type": "Expression"
+										},
+										"Schema_name": {
+											"value": "@item().src_schema",
+											"type": "Expression"
+										},
+										"Table_name": {
+											"value": "@item().src_tbl",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_ADLS_CSV",
+									"type": "DatasetReference",
+									"parameters": {
+										"Sink_container": {
+											"value": "@item().snk_container",
+											"type": "Expression"
+										},
+										"Sink_folder": {
+											"value": "@item().snk_folder",
+											"type": "Expression"
+										},
+										"Sink_file": {
+											"value": "@item().snk_file",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"Config_Container": {
+				"type": "string",
+				"defaultValue": "config"
+			},
+			"Folder": {
+				"type": "string",
+				"defaultValue": "sqlserver"
+			},
+			"File": {
+				"type": "string",
+				"defaultValue": "SQL_multydb.json"
+			}
+		},
+		"folder": {
+			"name": "Chetan Sir"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-08T04:41:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

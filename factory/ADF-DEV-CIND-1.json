@@ -1,0 +1,15 @@
+{
+	"name": "ADF-DEV-CIND-1",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "49c17b3a-45ae-4783-b92e-196f4643fa92",
+		"tenantId": "fd7d9027-6749-4ac4-94e8-ef0e8f97c1a4"
+	}
+}

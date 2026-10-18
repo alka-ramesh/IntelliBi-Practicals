@@ -1,0 +1,101 @@
+{
+	"name": "PL_Event_Triger",
+	"properties": {
+		"description": "Event Trigger Demo",
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container_name": {
+								"value": "@pipeline().parameters.PL_Container",
+								"type": "Expression"
+							},
+							"File_name": {
+								"value": "@pipeline().parameters.PL_File",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Adls_sink_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"sink_container": {
+								"value": "@pipeline().parameters.PL_Container",
+								"type": "Expression"
+							},
+							"Sink_Floder": "Event_triger_Files",
+							"Sink_File": {
+								"value": "@pipeline().parameters.PL_File",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"PL_Container": {
+				"type": "string"
+			},
+			"PL_File": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Chetan Sir"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-08T04:41:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

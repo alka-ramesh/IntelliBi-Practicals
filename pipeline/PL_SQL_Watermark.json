@@ -1,0 +1,138 @@
+{
+	"name": "PL_SQL_Watermark",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT * FROM source_test.Watermark\nWHERE is_active =1",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLServer_SOURCE",
+						"type": "DatasetReference",
+						"parameters": {
+							"SRC_ECHEMA": "source_test",
+							"SRC_TABLE": "Watermark"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_SQLServer_SOURCE",
+									"type": "DatasetReference",
+									"parameters": {
+										"SRC_ECHEMA": {
+											"value": "@ITEM().src_schema",
+											"type": "Expression"
+										},
+										"SRC_TABLE": {
+											"value": "@item().src_tbl",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_ADLS_SINK_PARQUET",
+									"type": "DatasetReference",
+									"parameters": {
+										"sink_container": {
+											"value": "@item().sink_container",
+											"type": "Expression"
+										},
+										"sink_folder": {
+											"value": "@item().sink_folder",
+											"type": "Expression"
+										},
+										"sink_file": {
+											"value": "@Item().sink_file",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "Chetan Sir"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-08T04:41:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

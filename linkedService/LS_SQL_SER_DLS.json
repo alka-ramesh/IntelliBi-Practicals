@@ -1,0 +1,34 @@
+{
+	"name": "LS_SQL_SER_DLS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Dynamic / Parameterized linked services Demo.",
+		"parameters": {
+			"DB_Name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "DESKTOP-2M0IEN2\\SQLEXPRESS",
+			"database": "@{linkedService().DB_Name}",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "admin",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "kv-sqldb"
+			}
+		},
+		"connectVia": {
+			"referenceName": "SHIR-SSMS",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

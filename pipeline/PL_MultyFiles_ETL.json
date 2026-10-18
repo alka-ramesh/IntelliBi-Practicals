@@ -1,0 +1,175 @@
+{
+	"name": "PL_MultyFiles_ETL",
+	"properties": {
+		"description": "Multiple sources through Config file ",
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "DS_ADLS_CONFIG",
+						"type": "DatasetReference",
+						"parameters": {
+							"con_container": {
+								"value": "@pipeline().parameters.Config_container",
+								"type": "Expression"
+							},
+							"con_folder": {
+								"value": "@pipeline().parameters.Config_folder",
+								"type": "Expression"
+							},
+							"con_file": {
+								"value": "@pipeline().parameters.Config_file",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().src_container}/@{item().src_folder}/@{item().src_file}"
+								},
+								{
+									"name": "Destination",
+									"value": "@{item().sink_cotainer}/@{item().sink_folder}/@{item().sink_file}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_ADLS_Binary",
+									"type": "DatasetReference",
+									"parameters": {
+										"src_container": {
+											"value": "@item().src_container",
+											"type": "Expression"
+										},
+										"src_folder": {
+											"value": "@item().src_folder",
+											"type": "Expression"
+										},
+										"src_file": {
+											"value": "@item().src_file",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_ADLS_Sink_Binary",
+									"type": "DatasetReference",
+									"parameters": {
+										"sink_container": {
+											"value": "@item().sink_cotainer",
+											"type": "Expression"
+										},
+										"sink_folder": {
+											"value": "@item().sink_folder",
+											"type": "Expression"
+										},
+										"sink_file": {
+											"value": "@item().sink_file",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"Config_container": {
+				"type": "string",
+				"defaultValue": "config"
+			},
+			"Config_folder": {
+				"type": "string",
+				"defaultValue": "adls_config"
+			},
+			"Config_file": {
+				"type": "string",
+				"defaultValue": "Gen2_config.json"
+			}
+		},
+		"folder": {
+			"name": "Chetan Sir"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-08T04:41:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

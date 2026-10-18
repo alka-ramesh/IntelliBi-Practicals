@@ -1,0 +1,21 @@
+{
+	"name": "LS_SSMS_SOURCE",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "DESKTOP-2M0IEN2\\SQLEXPRESS",
+			"database": "MILIND_PRACTICE",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "admin",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2OTFkYWI2ZS1hZmNlLTQxNTctODRjZS0xZWUzZWY5OGFmNDAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SHIR-SSMS",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

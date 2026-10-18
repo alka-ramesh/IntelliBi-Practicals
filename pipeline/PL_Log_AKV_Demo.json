@@ -1,0 +1,390 @@
+{
+	"name": "PL_Log_AKV_Demo",
+	"properties": {
+		"description": "Pipeline to Demonstrate Azure Key Vault and maintaining Logs of the pipeline",
+		"activities": [
+			{
+				"name": "Lookup_config",
+				"description": "Watermark table lookup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLDB_Common",
+						"type": "DatasetReference",
+						"parameters": {
+							"src_schema": {
+								"value": "@pipeline().parameters.SQL_schema",
+								"type": "Expression"
+							},
+							"src_Watermerk_tbl": {
+								"value": "@pipeline().parameters.SQL_Table",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach_WM_record",
+				"description": "Iterate each record from Watermark table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup_config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup_config').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"additionalColumns": [
+										{
+											"name": "Ingestetd_at",
+											"value": {
+												"value": "@utcNow()",
+												"type": "Expression"
+											}
+										}
+									],
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_SQLDB_Common",
+									"type": "DatasetReference",
+									"parameters": {
+										"src_schema": {
+											"value": "@item().src_schema",
+											"type": "Expression"
+										},
+										"src_Watermerk_tbl": {
+											"value": "@item().src_table",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_ADLS_Sink_AKV",
+									"type": "DatasetReference",
+									"parameters": {
+										"sink_container": {
+											"value": "@item().sink_container",
+											"type": "Expression"
+										},
+										"sink_folder": {
+											"value": "@item().sink_folder",
+											"type": "Expression"
+										},
+										"sink_file": {
+											"value": "@item().sink_file",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Success",
+							"description": "Successfully copied tables",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[EXE_PL_LOGS_USP]",
+								"storedProcedureParameters": {
+									"Copy_Duration": {
+										"value": {
+											"value": "@activity('Copy data1').output.copyDuration",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"DF_Name": {
+										"value": {
+											"value": "@pipeline().DataFactory",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"End_Time": {
+										"value": {
+											"value": "@activity('Copy data1').executionendtime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"Error_Message": {
+										"value": "'No Error'",
+										"type": "String"
+									},
+									"Load_Date": {
+										"value": {
+											"value": "@utcNow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"PL_Name": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Sink_Count": {
+										"value": {
+											"value": "@activity('Copy data1').output.rowsCopied",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Source_Count": {
+										"value": {
+											"value": "@activity('Copy data1').output.rowsRead",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Source_Schema": {
+										"value": {
+											"value": "@item().src_schema",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Source_Table": {
+										"value": {
+											"value": "@item().src_table",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Start_time": {
+										"value": {
+											"value": "@activity('Copy data1').executionstarttime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"Status": {
+										"value": {
+											"value": "@activity('Copy data1').output.executionDetails[0].status",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_SQLDB",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Fail",
+							"description": "Failed to copy table",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[EXE_PL_LOGS_USP]",
+								"storedProcedureParameters": {
+									"Copy_Duration": {
+										"value": {
+											"value": "@activity('Copy data1').output.copyDuration",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"DF_Name": {
+										"value": {
+											"value": "@pipeline().DataFactory",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"End_Time": {
+										"value": {
+											"value": "@activity('Copy data1').executionendtime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"Error_Message": {
+										"value": {
+											"value": "@activity('Copy data1').output.errors[0].Message",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Load_Date": {
+										"value": {
+											"value": "@utcNow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"PL_Name": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Sink_Count": {
+										"value": null,
+										"type": "Int32"
+									},
+									"Source_Count": {
+										"value": {
+											"value": "@activity('Copy data1').output.rowsRead",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Source_Schema": {
+										"value": {
+											"value": "@item().src_schema",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Source_Table": {
+										"value": {
+											"value": "@item().src_table",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Start_time": {
+										"value": {
+											"value": "@activity('Copy data1').executionstarttime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"Status": {
+										"value": {
+											"value": "@activity('Copy data1').output.executionDetails[0].status",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_SQLDB",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"SQL_schema": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"SQL_Table": {
+				"type": "string",
+				"defaultValue": "Watermark"
+			}
+		},
+		"folder": {
+			"name": "Chetan Sir"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-08T04:41:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

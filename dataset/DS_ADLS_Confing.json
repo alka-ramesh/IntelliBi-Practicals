@@ -1,0 +1,39 @@
+{
+	"name": "DS_ADLS_Confing",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_Config",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Config.json",
+				"fileSystem": "source"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"source_container_name": {
+					"type": "string"
+				},
+				"source_File_name": {
+					"type": "string"
+				},
+				"SINK_CONTAINER_NAME": {
+					"type": "string"
+				},
+				"SINK_FOLDER_NAME": {
+					"type": "string"
+				},
+				"SINK_file_name": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

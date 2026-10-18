@@ -1,0 +1,47 @@
+{
+	"name": "DS_SQLServer_SOURCE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQLServer_Source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SRC_ECHEMA": {
+				"type": "string",
+				"defaultValue": "source_test"
+			},
+			"SRC_TABLE": {
+				"type": "string",
+				"defaultValue": "Watermark"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "position",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().SRC_ECHEMA",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().SRC_TABLE",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
